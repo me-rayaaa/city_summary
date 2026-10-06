@@ -45,3 +45,8 @@ USD→RUB: 84.89
 - Погода: [Open-Meteo](https://open-meteo.com/)
 - Курсы: [Frankfurter](https://frankfurter.dev/)
 
+### JSON-вывод
+
+```bash
+python main.py --city Moscow --json
+```

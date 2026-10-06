@@ -1,6 +1,7 @@
 """CLI-утилита «Сводка по городу»."""
 
 import argparse
+import json
 import sys
 
 from exceptions import (
@@ -32,6 +33,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default="USD",
         help="ISO-код валюты (по умолчанию USD)",
     )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Вывести сводку в формате JSON",
+    )
     return parser.parse_args(argv)
 
 
@@ -51,6 +57,10 @@ def format_summary(summary: dict) -> str:
     )
 
 
+def format_summary_json(summary: dict) -> str:
+    return json.dumps(summary, indent=2, ensure_ascii=False)
+
+
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
 
@@ -63,9 +73,13 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Ошибка сервиса: {exc}", file=sys.stderr)
         return EXIT_SERVICE
 
-    print(format_summary(summary))
+    if args.json:
+        print(format_summary_json(summary))
+    else:
+        print(format_summary(summary))
     return EXIT_OK
 
 
 if __name__ == "__main__":
     sys.exit(main())
+
